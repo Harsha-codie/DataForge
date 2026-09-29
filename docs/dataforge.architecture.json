@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "DataForge System Architecture",
+    "output": "docs/architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "primary-path",
+        "label": "Primary User Path",
+        "focus": ["client_browser", "react_frontend", "fastapi_server", "postgres_db"],
+        "note": "Follow synchronous user requests from web UI through FastAPI server to primary PostgreSQL database."
+      },
+      {
+        "id": "async-pipeline",
+        "label": "Async Task & Compute Engine",
+        "focus": ["fastapi_server", "redis_cache", "celery_worker", "data_engine"],
+        "note": "Trace asynchronous background profiling, transformation DAGs, and ML readiness calculation."
+      },
+      {
+        "id": "storage-lineage",
+        "label": "Persistence & Object Storage",
+        "focus": ["postgres_db", "minio_s3", "celery_worker"],
+        "note": "View relational metadata, step-by-step version lineage, and binary S3 Parquet storage."
+      },
+      {
+        "id": "security-boundaries",
+        "label": "Security & Trust Boundaries",
+        "focus": ["client_browser", "jwt_auth", "fastapi_server"],
+        "note": "Examine client boundaries, JWT token validation guard, and isolated backend network zones."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "client_browser",
+      "type": "external",
+      "label": "User Browser",
+      "sublabel": "HTTP/HTTPS :3000",
+      "pos": [40, 180],
+      "size": [140, 60]
+    },
+    {
+      "id": "external_sources",
+      "type": "external",
+      "label": "External Data Sources",
+      "sublabel": "CSV / Parquet / APIs",
+      "pos": [40, 330],
+      "size": [140, 60]
+    },
+    {
+      "id": "jwt_auth",
+      "type": "security",
+      "label": "JWT Auth Guard",
+      "sublabel": "OAuth2 / Bcrypt",
+      "pos": [480, 50],
+      "size": [150, 60],
+      "tag": "Bearer Security"
+    },
+    {
+      "id": "react_frontend",
+      "type": "frontend",
+      "label": "React 18 SPA",
+      "sublabel": "Vite + TS :3000",
+      "pos": [250, 180],
+      "size": [150, 60]
+    },
+    {
+      "id": "fastapi_server",
+      "type": "backend",
+      "label": "FastAPI Server",
+      "sublabel": "Uvicorn :8000",
+      "pos": [480, 180],
+      "size": [150, 60]
+    },
+    {
+      "id": "postgres_db",
+      "type": "database",
+      "label": "PostgreSQL 16",
+      "sublabel": "Metadata & Lineage :5432",
+      "pos": [720, 180],
+      "size": [150, 60]
+    },
+    {
+      "id": "redis_cache",
+      "type": "database",
+      "label": "Redis Broker",
+      "sublabel": "Celery Broker :6379",
+      "pos": [480, 330],
+      "size": [150, 60]
+    },
+    {
+      "id": "celery_worker",
+      "type": "backend",
+      "label": "Celery Worker",
+      "sublabel": "Async Queue Worker",
+      "pos": [720, 330],
+      "size": [150, 60]
+    },
+    {
+      "id": "data_engine",
+      "type": "backend",
+      "label": "Data Engine",
+      "sublabel": "Pandas / Sklearn",
+      "pos": [940, 330],
+      "size": [140, 60]
+    },
+    {
+      "id": "minio_s3",
+      "type": "cloud",
+      "label": "MinIO S3 Storage",
+      "sublabel": "Object Store :9000",
+      "pos": [720, 460],
+      "size": [150, 60],
+      "tag": "S3 Bucket"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "DataForge Platform Infrastructure",
+      "wraps": [
+        "react_frontend",
+        "fastapi_server",
+        "jwt_auth",
+        "postgres_db",
+        "redis_cache",
+        "celery_worker",
+        "data_engine",
+        "minio_s3"
+      ]
+    },
+    {
+      "kind": "security-group",
+      "label": "Public Ingress Zone",
+      "wraps": ["react_frontend", "fastapi_server", "jwt_auth"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Async & Storage Processing Layer",
+      "wraps": [
+        "redis_cache",
+        "celery_worker",
+        "data_engine",
+        "minio_s3"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "browser-to-frontend",
+      "from": "client_browser",
+      "to": "react_frontend",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sources-to-frontend",
+      "from": "external_sources",
+      "to": "react_frontend",
+      "label": "File Upload",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "frontend-to-api",
+      "from": "react_frontend",
+      "to": "fastapi_server",
+      "label": "/api/v1 REST",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-auth",
+      "from": "fastapi_server",
+      "to": "jwt_auth",
+      "label": "Verify JWT",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDy": -20
+    },
+    {
+      "id": "api-to-db",
+      "from": "fastapi_server",
+      "to": "postgres_db",
+      "label": "SQL ORM",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "api-to-redis",
+      "from": "fastapi_server",
+      "to": "redis_cache",
+      "label": "Enqueue Job",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    },
+    {
+      "id": "redis-to-worker",
+      "from": "redis_cache",
+      "to": "celery_worker",
+      "label": "Dequeue Task",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "worker-to-engine",
+      "from": "celery_worker",
+      "to": "data_engine",
+      "label": "Compute Stats",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "worker-to-db",
+      "from": "celery_worker",
+      "to": "postgres_db",
+      "label": "Update Lineage",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "worker-to-s3",
+      "from": "celery_worker",
+      "to": "minio_s3",
+      "label": "Read/Write Parquet",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Q: How does the Client & Frontend interface with DataForge?",
+      "items": [
+        "A: Users access the React 18 SPA (Vite + TypeScript) on port 3000 delivering 16 views for profiling, schema editing, and ML readiness.",
+        "A: The frontend uses Axios API client with Bearer JWT tokens to execute synchronous REST operations over /api/v1."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Q: How are API requests, authentication, and core routes handled?",
+      "items": [
+        "A: FastAPI on port 8000 executes asynchronous Python routes for datasets, schemas, version diffs, and ML scoring.",
+        "A: PyJWT & Passlib handle authentication, while SQLAlchemy 2.0 ORM persists relational metadata in PostgreSQL 16 (port 5432)."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Q: How does Asynchronous Background Execution operate for heavy dataset workloads?",
+      "items": [
+        "A: FastAPI pushes long-running tasks (data profiling, transformation DAGs, ML scoring) to Redis 7 message broker (port 6379).",
+        "A: Celery background workers dequeue tasks and execute compute workloads without blocking HTTP response threads."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Q: How are compute profiling and dataset transformation engines structured?",
+      "items": [
+        "A: The Data Engine leverages Pandas, NumPy, Scikit-Learn, and SciPy to calculate skewness, missingness, correlation matrices, and ML readiness scores.",
+        "A: Processed datasets are serialized to optimized Apache Parquet and CSV formats using PyArrow."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Q: How is persistence, object storage, and version lineage managed?",
+      "items": [
+        "A: PostgreSQL storing user accounts, dataset schemas, transformation pipelines, and git-like version lineage trees.",
+        "A: MinIO S3 object storage (ports 9000/9001) persists raw uploads and transformed dataset versions in dataforge-datasets buckets."
+      ]
+    }
+  ]
+}

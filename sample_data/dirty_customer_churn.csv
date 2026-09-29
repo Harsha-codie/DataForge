@@ -1,0 +1,31 @@
+customer_id,name,age,gender,tenure_months,signup_date,monthly_charges,total_charges,contract_type,payment_method,churn
+CUST-001,Alice Smith,34,Female,12,2023-01-15,65.5,786.0,Month-to-month,Credit Card,No
+CUST-002,Bob Johnson,45,Male,24,2022-03-20,89.0,2136.0,One year,Bank Transfer,No
+CUST-003,Carol White,29,Female,3,2023-11-05,45.2,135.6,Month-to-month,Electronic Check,Yes
+CUST-004,David Brown,,Male,18,2022-08-12,70.0,1260.0,One year,Credit Card,No
+CUST-005,Emma Wilson,52,Female,36,2021-05-30,110.5,3978.0,Two year,Credit Card,No
+CUST-006,Frank Miller,38,Male,6,2023-07-22,55.0,330.0,Month-to-month,Mailed Check,Yes
+CUST-007,Grace Davis,61,Female,48,2020-02-14,95.2,4569.6,Two year,Bank Transfer,No
+CUST-008,Henry Taylor,24,Male,1,2024-01-08,30.0,30.0,Month-to-month,Electronic Check,Yes
+CUST-009,Ivy Anderson,42,Female,15,2022-10-18,80.5,1207.5,Month-to-month,Credit Card,No
+CUST-010,Jack Thomas,31,Male,9,2023-04-25,60.0,540.0,Month-to-month,Electronic Check,No
+CUST-003,Carol White,29,Female,3,2023-11-05,45.2,135.6,Month-to-month,Electronic Check,Yes
+CUST-011,Karen Martinez,49,Female,28,2021-12-10,102.3,unknown,One year,Credit Card,No
+CUST-012,Leo Robinson,73,Male,999,2023-09-01,75.0,75000.0,Month-to-month,Electronic Check,Yes
+CUST-013,Mia Clark,22,Female,4,2023-10-11,40.0,160.0,Month-to-month,Mailed Check,No
+CUST-014,Noah Rodriguez,,Male,14,2022-11-19,85.5,1197.0,One year,Credit Card,No
+CUST-015,Olivia Lewis,36,Female,22,2022-04-03,92.0,$2024.00,Month-to-month,Bank Transfer,Yes
+CUST-016,Paul Lee,41,Male,0,2024-02-01,25.0,,Month-to-month,Mailed Check,No
+CUST-017,Quinn Walker,27,Female,8,2023-06-14,68.0,544.0,Month-to-month,Electronic Check,No
+CUST-018,Ryan Hall,58,Male,40,2020-09-27,105.0,4200.0,Two year,Credit Card,No
+CUST-019,Sophia Allen,33,Female,11,2023-02-18,72.5,797.5,Month-to-month,Credit Card,Yes
+CUST-007,Grace Davis,61,Female,48,2020-02-14,95.2,4569.6,Two year,Bank Transfer,No
+CUST-020,Thomas Young,47,Male,30,2021-08-09,88.0,2640.0,One year,Bank Transfer,No
+CUST-021,Uma Patel,30,Female,7,2023-07-15,50.0,350.0,Month-to-month,Electronic Check,No
+CUST-022,Victor King,65,Male,60,2019-01-10,115.0,15000.0,Two year,Credit Card,No
+CUST-023,Wendy Scott,26,Female,2,2023-12-01,35.0,70.0,Month-to-month,Mailed Check,Yes
+CUST-024,Xavier Green,39,Male,19,2022-07-04,78.5,1491.5,One year,Electronic Check,No
+CUST-025,Yara Baker,50,Female,33,2021-04-12,98.0,3234.0,Two year,Credit Card,No
+CUST-026,Zack Nelson,28,Male,5,2023-08-20,48.0,240.0,Month-to-month,Electronic Check,Yes
+CUST-027,Amber Bell,35,Female,13,2023-01-28,71.0,923.0,Month-to-month,Credit Card,No
+CUST-028,Brian Adams,43,Male,26,2022-01-14,84.0,2184.0,One year,Bank Transfer,No

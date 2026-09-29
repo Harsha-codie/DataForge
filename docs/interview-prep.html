@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataForge — Technical Interview Preparation Hub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --blue: #388bfd;
+      --blue-bg: rgba(56, 139, 253, 0.12);
+      --green: #3fb950;
+      --purple: #a371f7;
+      --orange: #f78166;
+      --orange-bg: rgba(247, 129, 102, 0.1);
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    /* Global Visible Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--blue);
+    }
+
+    header {
+      padding: 18px 36px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-back:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+      transform: translateX(-2px);
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .h1-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .h2-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 8px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .badge.green {
+      color: var(--green);
+      border-color: rgba(63, 185, 80, 0.4);
+      background: rgba(63, 185, 80, 0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px 64px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-bg);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .tabs-wrapper {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+    .tab-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+    }
+    .tab-count {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .qa-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-header {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wwh-box {
+      background: rgba(56, 139, 253, 0.08);
+      border: 1px solid rgba(56, 139, 253, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .wwh-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--blue);
+    }
+    .wwh-item {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #c9d1d9;
+    }
+    .wwh-item strong {
+      color: #ffffff;
+    }
+
+    .qa-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: visible; /* Dynamic Full Height */
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qa-card:hover {
+      border-color: rgba(56, 139, 253, 0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Clean Question Header without Arrow Icons */
+    .qa-card-header {
+      padding: 18px 22px;
+      cursor: pointer;
+      display: block;
+      user-select: none;
+    }
+
+    .qa-q-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .qa-card:hover .qa-q-text {
+      color: var(--blue);
+    }
+
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .qa-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Expanded Content Container - Dynamic Height without Truncation */
+    .qa-card-body {
+      display: none;
+      padding: 0 22px 22px 22px;
+      border-top: 1px dashed var(--border);
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+    .qa-card.open .qa-card-body {
+      display: block;
+      animation: slideDown 0.2s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ans-box {
+      margin-top: 16px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #c9d1d9;
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 10px;
+      border-left: 4px solid var(--blue);
+    }
+    .ans-label {
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cross-box {
+      margin-top: 14px;
+      background: var(--orange-bg);
+      border: 1px solid rgba(247, 129, 102, 0.3);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .cross-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .cross-q {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+    .cross-a {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <a href="architecture.html" class="btn-back">
+        <span>←</span>
+        <span>Back to Architecture Diagram</span>
+      </a>
+      <div class="logo">⚡</div>
+      <div>
+        <div class="h1-title">DataForge — Technical Interview Preparation Hub</div>
+        <div class="h2-sub">What, Why, How Overviews & Directly Related Cross-Questions</div>
+      </div>
+    </div>
+    <div class="badges">
+      <span class="badge green">50 Component Q&As</span>
+      <span class="badge">Full-Stack Architecture</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="controls-card">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by concept (e.g., JWT, Celery, Parquet, CORS, PostgreSQL, Virtualization)..." oninput="filterData()">
+      </div>
+      <div class="tabs-wrapper" id="tabsContainer"></div>
+    </div>
+
+    <div class="qa-feed" id="qaFeed"></div>
+  </main>
+
+  <script>
+    const COMPONENT_DATA_MAP = {"client_browser":{"id":"client_browser","name":"User Browser (HTTP/HTTPS :3000)","tag":"External Client & Browser Engine","overview":{"what":"The Web Browser client environment running the DataForge Single Page Application (SPA).","why":"Provides an interactive, dynamic data preparation workspace for end-users to upload, profile, transform, and evaluate datasets.","how":"Executes React 18 frontend JavaScript, manages local token storage, renders virtualized tables & Plotly charts, and makes REST calls to FastAPI on port 8000."},"questions":[{"q":"Q1: How does the User Browser initiate and maintain authenticated sessions with the React SPA and FastAPI backend?","a":"The browser loads static HTML/JS/CSS assets from the React SPA on port 3000. It stores authentication state using JWT tokens in session storage and appends 'Authorization: Bearer <token>' to all HTTP REST requests targeting FastAPI on port 8000.","crossQ":"Cross-Question: Since frontend (:3000) and backend (:8000) run on different ports, how do CORS preflight (OPTIONS) requests validate the Bearer token header?","crossA":"When the browser sends a request with custom headers like 'Authorization', it first sends an automatic HTTP OPTIONS preflight request. FastAPI must respond with 'Access-Control-Allow-Origin: http://localhost:3000' and 'Access-Control-Allow-Headers: Authorization' before the browser sends the actual Bearer token request."},{"q":"Q2: How do modern browser rendering engines execute heavy dataset visualization without dropping frame rates below 60 FPS?","a":"Heavy calculations are offloaded to Web Workers or scheduled via requestAnimationFrame. DOM rendering uses list virtualization to mount only visible table rows into the DOM, preventing layout thrashing and high RAM overhead.","crossQ":"Cross-Question: What exactly causes layout thrashing in V8/Blink rendering engines, and how does Virtual DOM batching prevent it?","crossA":"Layout thrashing happens when JS reads layout properties (like offsetHeight) immediately after modifying styles (like style.width), forcing the browser to recalculate geometric layout synchronously. Virtual DOM batching groups all style writes together before reading, avoiding repeated synchronous layout recalculations."},{"q":"Q3: How does the browser handle file uploads of large datasets (50MB+ CSV/Parquet) from local disk?","a":"The browser reads files via File/FileReader APIs or slices data into byte chunks using Blob.slice(). Chunks are uploaded via Axios multipart FormData or streamed directly to MinIO S3 presigned URLs with progress monitoring.","crossQ":"Cross-Question: Why is Blob.slice() chunking superior to reading the entire file into a single JS ArrayBuffer?","crossA":"Reading a 2GB file entirely into an ArrayBuffer allocates 2GB of continuous V8 heap memory, risking browser tab crashes (Out Of Memory). Blob.slice() streams 5MB slices sequentially, keeping browser memory footprint constant regardless of file size."},{"q":"Q4: How does the browser enforce security boundaries against XSS and CSRF attacks?","a":"XSS is mitigated via Content Security Policy (CSP) headers, input sanitization, and avoiding raw dangerouslySetInnerHTML. CSRF is mitigated via SameSite=Strict cookie attributes, CORS origin checks, and Bearer token headers.","crossQ":"Cross-Question: If JWT tokens are stored in sessionStorage as described in the main answer, is it immune to XSS attacks?","crossA":"No! sessionStorage is accessible via window.sessionStorage JS APIs, so an XSS vulnerability executing in the page context can still read the token. Storing tokens in HttpOnly, SameSite=Strict cookies is the only mechanism inaccessible to JavaScript APIs."},{"q":"Q5: How does the browser cache static assets and handle cache invalidation during new platform deployments?","a":"Vite generates content-hashed filenames for JS/CSS bundles (e.g., index-a8f3b2.js). The server sets 'Cache-Control: max-age=31536000, immutable' for hashed asset bundles and 'no-cache' for index.html.","crossQ":"Cross-Question: What happens if index.html is aggressively cached by a user browser or intermediate CDN despite 'no-cache' directives?","crossA":"Users receive stale HTML referencing deleted asset hashes, resulting in 404 errors and broken white screens. Setting 'Cache-Control: no-cache, no-store, must-revalidate' on index.html forces browsers to revalidate with the origin server before rendering."}]},"external_sources":{"id":"external_sources","name":"External Data Sources (CSV / Parquet / APIs)","tag":"Data Ingestion & External Protocols","overview":{"what":"Raw dataset files (CSV, Parquet, JSON Lines, Excel) and external REST/GraphQL data streams ingested into DataForge.","why":"Provides foundational raw data inputs required for analytical profiling, schema validation, data cleaning, and ML model training.","how":"Ingested via direct browser file uploads, multipart S3 streaming, or scheduled background connector jobs that parse byte streams into standardized formats."},"questions":[{"q":"Q1: How does DataForge handle heterogeneous data ingestion formats (CSV, Parquet, JSON Lines, Excel)?","a":"Ingestion engines analyze incoming file headers and MIME types. CSV files are parsed via Pandas read_csv, Parquet files via PyArrow engine, and JSON Lines via read_json(lines=True).","crossQ":"Cross-Question: How do you detect and resolve character encoding mismatches (e.g. UTF-8 vs Latin-1 vs UTF-16) during raw CSV byte parsing?","crossA":"We inspect initial byte buffers using charset_normalizer to detect encoding before parsing, falling back to utf-8-sig or latin1 with replacement parameters for illegal byte sequences."},{"q":"Q2: What are the trade-offs between processing raw CSV data vs columnar Apache Parquet files?","a":"CSV is text-based, human-readable, but slow to parse and uncompressed. Parquet is binary, columnar, supports Snappy compression (saving ~80% storage), and preserves native schema data types.","crossQ":"Cross-Question: Why is column pruning mathematically and I/O-wise faster in Parquet than in CSV?","crossA":"CSV requires scanning every character line-by-line across all columns. Parquet stores data in column chunks with byte offset metadata, allowing file readers to seek directly to requested columns while skipping unneeded data chunks entirely."},{"q":"Q3: How do you handle schema drift when external sources send updated dataset files with extra or missing columns?","a":"Schema Engine compares incoming headers against registered Pydantic/JSON schemas. New columns trigger schema evolution flags, missing optional columns fill with nulls, and incompatible type changes raise errors.","crossQ":"Cross-Question: How do you implement schema evolution without corrupting or breaking historical dataset pipeline versions?","crossA":"Version lineage trees record immutable snapshot schemas per version. Schema changes spawn a new child dataset version node rather than mutating parent version schemas, preserving historical reproducible execution."},{"q":"Q4: How does DataForge prevent Malicious File Ingestion attacks (Zip Bombs, CSV Injection)?","a":"Uploads pass size limits (MAX_UPLOAD_SIZE_MB = 500), extension whitelists, MIME checks, and formula sanitization (stripping leading =, +, -, @ characters in CSV cells to prevent Excel DDE execution).","crossQ":"Cross-Question: What is CSV Formula Injection (DDE), and how can a malicious CSV file execute arbitrary commands on an analyst's workstation?","crossA":"If a cell contains =cmd|'/C calc'!A1, opening the CSV in Excel triggers Dynamic Data Exchange (DDE) command execution. Stripping or prefixing cell formula characters prevents spreadsheet software from executing external commands."},{"q":"Q5: How are streaming data feeds or external API connections handled in DataForge?","a":"External REST/GraphQL endpoints are queried using chunked HTTP streaming (httpx / aiohttp) or scheduled Celery background jobs that fetch, validate, and convert payloads into Parquet buffers.","crossQ":"Cross-Question: How do you handle rate-limiting (HTTP 429 Too Many Requests) when consuming third-party data APIs?","crossA":"Implement exponential backoff retries with random jitter, honor Retry-After response headers, and throttle outgoing request rates using Redis token bucket algorithms."}]},"react_frontend":{"id":"react_frontend","name":"React 18 SPA (Vite + TS :3000)","tag":"React 18 SPA & TypeScript","overview":{"what":"The Single Page Application frontend interface built with React 18, Vite, and TypeScript.","why":"Delivers a responsive user experience across 16 viewports for data exploration, profiling dashboards, pipeline building, and ML readiness scoring.","how":"Leverages React Context for global state, Axios for API REST communication, Plotly for interactive charts, and virtualized lists for large data grid previews."},"questions":[{"q":"Q1: How does React 18 Concurrent Rendering (useTransition, useDeferredValue) optimize heavy UI data filtering?","a":"React 18 allows non-urgent UI updates (like rendering a filtered table of 1,000 rows) to be marked as low priority via useTransition, keeping urgent updates (like typing in search input) responsive without UI lag.","crossQ":"Cross-Question: How does useDeferredValue differ fundamentally from standard debounce or throttle functions?","crossA":"debounce delays execution by a fixed millisecond timer regardless of device CPU speed. useDeferredValue adapts dynamically—fast CPUs render deferred values almost immediately, while slower devices defer rendering without hardcoded artificial delays."},{"q":"Q2: How is state organized across DataForge's 16 separate page viewports?","a":"Application-wide state (Auth, Notifications, Active Dataset ID) is held in specialized React Contexts. Page-specific state (active tab, filter inputs) is isolated within page components to prevent root re-render cascades.","crossQ":"Cross-Question: How do you prevent context re-renders when only one property in a context object changes?","crossA":"Split monolithic contexts into atomic sub-contexts (e.g. AuthContext vs DatasetContext) or pass memoized value objects (useMemo) to Context Provider value props."},{"q":"Q3: How does the frontend handle code-splitting and dynamic route imports in Vite?","a":"Routes are declared using React.lazy(() => import('./pages/ProfilingDashboard')) wrapped in React.Suspense with a fallback loader. Vite bundles each route into an independent JS chunk loaded on demand.","crossQ":"Cross-Question: What happens if a user navigates to a lazy-loaded route when network connectivity drops?","crossA":"Dynamic import fails with a ChunkLoadError. We catch chunk load failures using React Error Boundaries and prompt the user to retry or check their network connection."},{"q":"Q4: How are complex mathematical charts (Plotly / Chart.js) integrated into React lifecycle methods?","a":"Chart components use useEffect hooks triggered on prop changes (metricsData), rendering into DOM ref containers (useRef). Component unmounting triggers chart teardown (chart.destroy()) to prevent memory leaks.","crossQ":"Cross-Question: Why must third-party canvas/DOM libraries be cleaned up explicitly on component unmount in React?","crossA":"Non-React DOM instances retain references to DOM nodes and event listeners. Failing to call teardown methods causes detached DOM tree memory leaks."},{"q":"Q5: How is client-side form validation structured for complex data transformation pipelines?","a":"Forms use React Hook Form with Zod / Yup schema resolvers. Input specifications (imputation strategy, scaling limits) are validated client-side before sending JSON payloads to FastAPI endpoints.","crossQ":"Cross-Question: Why validate inputs on the frontend if the FastAPI backend also uses Pydantic validation?","crossA":"Frontend validation gives instant user feedback without network latency. Backend Pydantic validation guarantees security and data integrity regardless of client implementation."}]},"fastapi_server":{"id":"fastapi_server","name":"FastAPI Server (Uvicorn :8000)","tag":"FastAPI & Python ASGI Server","overview":{"what":"High-performance Python web framework server running on Uvicorn (port 8000).","why":"Acts as the API Gateway handling HTTP request routing, authentication guards, input serialization, and database queries.","how":"Operates an ASGI event loop (uvloop), validates models via Pydantic v2, and delegates heavy compute tasks asynchronously to Celery workers."},"questions":[{"q":"Q1: How does FastAPI achieve high throughput using Uvicorn and ASGI architecture?","a":"Uvicorn runs an ASGI event loop powered by uvloop (a fast C-Python wrapper around libuv). Non-blocking async def routes yield control during I/O, allowing thousands of concurrent HTTP connections on a single thread.","crossQ":"Cross-Question: What happens if a developer writes blocking CPU code (like time.sleep() or heavy loop calculations) inside an async def route?","crossA":"Blocking the main event loop thread freezes ALL incoming requests for all users! Blocking operations must be offloaded to Celery background workers or run in thread pools via run_in_threadpool."},{"q":"Q2: How is dependency injection (Depends) utilized in FastAPI for database and auth management?","a":"FastAPI's Depends injects dependencies like DB sessions (db: Session = Depends(get_db)) and authenticated user instances (user: User = Depends(get_current_user)), handling initialization and teardown automatically.","crossQ":"Cross-Question: How do you write unit tests for FastAPI endpoints without connecting to a live database?","crossA":"Use app.dependency_overrides[get_db] = override_get_db to inject mock in-memory SQLite database sessions or mock objects during PyTest execution."},{"q":"Q3: How does Pydantic v2 handle data validation, serialization, and parsing in FastAPI?","a":"Pydantic v2 uses pydantic-core written in Rust. It validates incoming JSON payloads, enforces type constraints, and serializes Python objects into UTF-8 JSON byte streams up to 20x faster than Pydantic v1.","crossQ":"Cross-Question: What is the difference between Field(..., gt=0) and @field_validator in Pydantic?","crossA":"Field enforces static declarative constraints (greater than zero, regex pattern). @field_validator executes custom Python validation logic across fields (verifying end_date > start_date)."},{"q":"Q4: How does DataForge implement custom API middleware in FastAPI?","a":"Custom ASGI middleware intercepts requests/responses to add process timing headers (X-Process-Time), request correlation IDs (X-Request-ID), and log structured access metrics.","crossQ":"Cross-Question: Why should heavy authentication checks NOT be placed inside global ASGI middleware?","crossA":"Global middleware executes on ALL routes, including public static assets and health probes. Placing auth in route-specific dependencies (Depends) avoids unneeded overhead on unauthenticated routes."},{"q":"Q5: How are background HTTP response tasks (BackgroundTasks) used in FastAPI?","a":"BackgroundTasks executes light post-response actions (sending email notifications, logging audit trails) immediately after returning the HTTP response payload to the client.","crossQ":"Cross-Question: When should you use Celery workers instead of FastAPI's built-in BackgroundTasks?","crossA":"Use BackgroundTasks for lightweight tasks (<1s) within the same process. Use Celery for CPU-heavy profiling, long-running pipeline execution, or tasks requiring retry guarantees, progress tracking, and worker distribution."}]},"jwt_auth":{"id":"jwt_auth","name":"JWT Auth Guard (OAuth2 / Bcrypt)","tag":"Authentication & Security","overview":{"what":"Security service handling user password hashing, JWT token issuance, and OAuth2 Bearer route protection.","why":"Ensures secure user authentication, protects sensitive data endpoints, and enforces role-based access control.","how":"Hashes passwords using Bcrypt with salt rounds, signs JWT tokens using HS256, and inspects Authorization headers via FastAPI dependency guards."},"questions":[{"q":"Q1: How does DataForge secure user password storage and authentication token issuance?","a":"Passwords are hashed using Bcrypt with salt rounds. Upon login, PyJWT generates a signed JSON Web Token containing sub (user ID), exp (expiry timestamp), and scopes, signed with a 256-bit secret key (HS256).","crossQ":"Cross-Question: What is the security impact of choosing HS256 (symmetric) vs RS256 (asymmetric) for JWT signing?","crossA":"HS256 uses a single shared secret for signing and verification. RS256 uses a private key to sign and public key to verify, allowing external microservices to verify tokens without knowing the secret key."},{"q":"Q2: How does the JWT Auth Guard inspect incoming HTTP requests?","a":"The dependency OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login') extracts the Authorization: Bearer <token> header. PyJWT decodes and verifies signature integrity and expiration before returning user identity.","crossQ":"Cross-Question: How do you handle expired JWT tokens gracefully without logging the user out instantly?","crossA":"Implement Refresh Token rotation. Short-lived Access Tokens (15 min) are refreshed using long-lived Refresh Tokens (7 days) stored securely in HttpOnly cookies."},{"q":"Q3: How do you prevent Brute-Force Password Guessing attacks on authentication endpoints?","a":"We use Redis rate-limiting middleware (slowapi / token bucket) capping login attempts per IP address (max 5 attempts per minute), returning 429 Too Many Requests on breach.","crossQ":"Cross-Question: How do you protect against Credential Stuffing attacks across distributed bot networks?","crossA":"Rate-limiting by IP alone is insufficient against botnets. Implement CAPTCHA challenges, progressive account lockouts after consecutive failures, and multi-factor authentication (MFA)."},{"q":"Q4: How are user roles and permission scopes enforced across API routes?","a":"Route dependencies accept required permissions (Depends(RequirePermission('dataset:write'))). The guard decodes JWT scopes or checks PostgreSQL user roles (admin, analyst, viewer) before allowing route handler execution.","crossQ":"Cross-Question: What is the difference between Role-Based Access Control (RBAC) and Attribute-Based Access Control (ABAC)?","crossA":"RBAC grants access based on fixed static roles (Admin vs User). ABAC evaluates dynamic runtime context ('User X can edit Dataset Y only if User X is the dataset owner AND time is between 9 AM - 5 PM')."},{"q":"Q5: How is stateless JWT token revocation (logout / ban) handled in Redis?","a":"When a user logs out, the token's unique identifier (jti) is saved to a Redis blacklist with a TTL equal to the token's remaining lifespan. The Auth Guard checks Redis on each request.","crossQ":"Cross-Question: Doesn't checking Redis on every request destroy the benefits of stateless JWTs?","crossA":"Checking a fast in-memory Redis key lookup takes <1ms and preserves security control, combining stateless token scalability with instant revocation capability."}]},"postgres_db":{"id":"postgres_db","name":"PostgreSQL 16 (Metadata & Lineage :5432)","tag":"Relational DB & Lineage Storage","overview":{"what":"Primary relational database management system running on port 5432.","why":"Persists structured system metadata including user accounts, dataset schemas, transformation pipelines, and git-like version lineage trees.","how":"Interfaced via SQLAlchemy 2.0 ORM and Alembic migrations, utilizing indexing, foreign key constraints, and JSONB document columns."},"questions":[{"q":"Q1: How is dataset version lineage structured in PostgreSQL?","a":"Lineage is stored as a self-referential graph table (dataset_versions) where each row points to its parent_version_id, storing immutable pipeline step diffs, column schema JSON, and target S3 file keys.","crossQ":"Cross-Question: How do you query an entire lineage tree from root to leaf in PostgreSQL efficiently?","crossA":"Use PostgreSQL Recursive CTEs (WITH RECURSIVE lineage AS (...)), which traverse parent-child relationships in a single optimized database query."},{"q":"Q2: How does SQLAlchemy 2.0 ORM manage database transactions and concurrency in DataForge?","a":"SQLAlchemy 2.0 uses SessionLocal() with explicit commit(), rollback(), and context managers (with Session() as session:), enforcing transaction boundaries and automatic connection release.","crossQ":"Cross-Question: How do you handle race conditions during concurrent dataset version increments?","crossA":"Use Optimistic Locking (version column check) or Pessimistic Locking (SELECT FOR UPDATE) to lock row records during atomic version calculations."},{"q":"Q3: How are database indexes designed for DataForge's metadata tables?","a":"B-tree indexes are placed on foreign keys (user_id, dataset_id), search columns (created_at, status), and composite indexes on (dataset_id, version_number) to optimize lookups.","crossQ":"Cross-Question: Why can over-indexing a database table degrade platform write performance?","crossA":"Every INSERT, UPDATE, or DELETE requires PostgreSQL to update all associated B-tree index structures synchronously on disk, increasing write latency and disk I/O."},{"q":"Q4: How does Alembic manage database schema migrations in production?","a":"Alembic auto-generates migration scripts by comparing SQLAlchemy metadata models against live DB schemas, executing migrations deterministically via alembic upgrade head.","crossQ":"Cross-Question: How do you perform zero-downtime migrations when dropping or renaming a column?","crossA":"Execute a multi-step migration: (1) Add new column, (2) Deploy code writing to both columns, (3) Backfill historical data, (4) Switch code to read new column, (5) Drop old column in next release."},{"q":"Q5: How are JSON columns (JSONB) utilized in PostgreSQL for DataForge schemas?","a":"Dynamic column stats, profile metrics, and transformation DAG specs are stored in JSONB columns, enabling flexible schema storage with GIN indexing for fast nested JSON queries.","crossQ":"Cross-Question: What is the difference between JSON and JSONB column types in PostgreSQL?","crossA":"JSON stores exact text formatting (slower to query, preserves whitespace). JSONB stores decomposed binary JSON (faster to parse and query, supports GIN indexes)."}]},"redis_cache":{"id":"redis_cache","name":"Redis Broker (Celery Broker :6379)","tag":"Redis In-Memory Broker & Cache","overview":{"what":"High-throughput in-memory data store running on port 6379.","why":"Serves as the Celery task broker, async task result backend, fast API response cache, and rate-limiting store.","how":"Utilizes Kombu transport protocol queues (BRPOP/LPUSH), TTL key expiration, Pub/Sub channels, and Redlock distributed mutexes."},"questions":[{"q":"Q1: What roles does Redis 7 play in DataForge's runtime architecture?","a":"Redis operates as: (1) Celery message broker passing task messages, (2) Celery task result backend, (3) Fast API response cache, and (4) Rate-limiting counter store.","crossQ":"Cross-Question: What is the difference between Redis RDB snapshots and AOF (Append-Only File) persistence?","crossA":"RDB creates periodic point-in-time binary snapshots (fast restore, risk of missing recent writes). AOF logs every write command sequentially (durable, slower restore, zero data loss)."},{"q":"Q2: How does Celery interact with Redis queues using Kombu transport protocol?","a":"Celery pushes JSON task payloads into Redis LIST or STREAM structures (BRPOP / LPUSH). Worker processes block-pop messages from Redis queues for processing.","crossQ":"Cross-Question: What happens if Redis memory reaches 100% capacity while workers are running?","crossA":"Redis rejects writes (OOM command not allowed). We set maxmemory-policy allkeys-lru or volatile-lru and configure memory alerts at 80% usage."},{"q":"Q3: How is Redis utilized for caching API query responses in FastAPI?","a":"Heavy API responses (e.g. dataset profiling summaries) are serialized to JSON and cached in Redis with a 1-hour TTL (redis.setex(key, 3600, payload)). Subsequent requests return cached JSON directly.","crossQ":"Cross-Question: What is Cache Stampede (Thundering Herd) and how do you prevent it in Redis?","crossA":"Cache Stampede occurs when a popular cache key expires, causing hundreds of concurrent requests to hit the database simultaneously. Prevent it using distributed mutex locks (redlock) or probabilistic early expiration."},{"q":"Q4: How does Redis handle Pub/Sub messaging for real-time task progress tracking?","a":"Celery workers publish task progress updates (25% complete) to Redis Pub/Sub channels (PUBLISH task:123 progress). FastAPI WebSocket listeners subscribe to relay updates to the browser.","crossQ":"Cross-Question: Why is Redis Pub/Sub NOT suitable for reliable message queueing?","crossA":"Redis Pub/Sub is fire-and-forget—messages are lost if no subscriber is actively connected. Redis Stream or Celery Queues must be used for reliable durable delivery."},{"q":"Q5: How are distributed locks (Redlock) implemented in Redis to prevent concurrent task execution?","a":"Redis sets atomic key locks (SET lock_key uuid NX PX 30000). Only the process holding the matching UUID can release the lock, preventing duplicate worker execution.","crossQ":"Cross-Question: What happens if a worker holding a Redis distributed lock crashes before releasing it?","crossA":"The PX (TTL) parameter ensures the lock automatically expires after the timeout, preventing permanent deadlocks."}]},"celery_worker":{"id":"celery_worker","name":"Celery Worker (Async Queue Worker)","tag":"Celery Task Queue & Workers","overview":{"what":"Distributed background task worker execution system.","why":"Offloads heavy profiling calculations, bulk dataset transformations, and ML readiness scoring from HTTP response threads.","how":"Dequeues tasks from Redis message queues, executes Python compute pipelines in prefork processes, and updates DB job state."},"questions":[{"q":"Q1: How does Celery manage asynchronous worker processes and task execution?","a":"Celery worker nodes poll Redis queues, deserialize task payloads, execute Python functions (profiling, scaling, encoding), store output in Redis result backend, and update status in PostgreSQL.","crossQ":"Cross-Question: How do you handle worker process crashes due to C-extension segmentation faults (e.g. inside NumPy)?","crossA":"Celery's prefork pool supervisor automatically detects dead worker child processes and spawns replacement workers without crashing the main Celery daemon."},{"q":"Q2: How do you configure task routing across different Celery queues in DataForge?","a":"Tasks are routed to specialized queues: celery -A app worker -Q high_priority,default,heavy_compute. Fast tasks (auth, exports) run on high-priority queues; heavy profiling runs on isolated compute queues.","crossQ":"Cross-Question: Why route heavy profiling tasks to isolated queues away from fast lightweight tasks?","crossA":"Prevents heavy 10-minute profiling jobs from blocking quick 100ms export tasks in shared worker queues."},{"q":"Q3: How does Celery handle task acknowledgments (acks_late) and worker failures?","a":"Setting task_acks_late=True instructs workers to send message acknowledgments ONLY after successful execution. If a worker dies mid-task, Redis re-delivers the task to another worker.","crossQ":"Cross-Question: What is the key prerequisite when setting task_acks_late=True?","crossA":"Task execution functions MUST be idempotent (safe to re-execute without duplicate side effects or corrupted partial data)."},{"q":"Q4: How do you implement task progress monitoring and status reporting in Celery?","a":"Tasks call self.update_state(state='PROGRESS', meta={'current': step, 'total': 100}). Celery updates Redis result backend, allowing frontend clients to poll status endpoints.","crossQ":"Cross-Question: What is the danger of calling update_state inside tight loops (e.g. on every row of 1M rows)?","crossA":"Calling update_state 1 million times generates massive Redis network I/O overhead. Update state only at milestone percentages (every 5% or 1,000 rows)."},{"q":"Q5: How do you gracefully shut down Celery workers during rolling deployments?","a":"Send SIGTERM to the worker process. Celery stops consuming new queue messages and completes active tasks before shutting down (warm shutdown).","crossQ":"Cross-Question: What happens if a task exceeds acks_late soft time limits (time_limit vs soft_time_limit)?","crossA":"soft_time_limit raises a SoftTimeLimitExceeded exception inside Python, allowing clean teardown. time_limit sends uncatchable SIGKILL to force-kill the process."}]},"data_engine":{"id":"data_engine","name":"Data Engine (Pandas / Sklearn)","tag":"Data Engine & ML Readiness","overview":{"what":"Core data processing and analytics compute package (`app.engine`).","why":"Calculates statistical distributions, missingness, anomaly scores, feature correlations, and applies transformation DAGs.","how":"Runs vectorized C-level operations via Pandas/NumPy, executes Scikit-Learn pipelines, and serializes outputs to Apache Parquet."},"questions":[{"q":"Q1: How does the Data Engine compute statistical profiling metrics (missingness, skewness, entropy)?","a":"The engine runs vectorized Pandas/SciPy routines computing missing ratios, distinct values, mean, std, skewness, and IQR in C-level memory loops.","crossQ":"Cross-Question: Why are vectorized Pandas operations significantly faster than native Python for loops?","crossA":"Vectorized operations call pre-compiled C/Fortran code (NumPy array buffers) executing contiguous memory operations without Python object interpreter overhead."},{"q":"Q2: How is the composite ML Readiness Score calculated across dataset features?","a":"The ML Engine aggregates 5 metrics: Missing Rate (30%), Class Imbalance (20%), Outlier Ratio (20%), Multicollinearity/VIF (15%), and Encoding Status (15%) into a weighted index (0–100%).","crossQ":"Cross-Question: How is Variance Inflation Factor (VIF) computed to detect multicollinearity?","crossA":"VIF regression measures how much variance of an estimated regression coefficient is inflated due to collinearity among predictors (VIF_i = 1 / (1 - R_i^2)). VIF > 10 indicates severe multicollinearity."},{"q":"Q3: How are data transformation DAGs executed sequentially on dataframes?","a":"The engine parses JSON DAG steps, dynamically instantiating Scikit-Learn transformers (SimpleImputer, OneHotEncoder, StandardScaler) within a unified sklearn.pipeline.Pipeline.","crossQ":"Cross-Question: Why must transformation pipelines fit on training data and only transform test data?","crossA":"Fitting scaling or encoding on combined datasets causes Data Leakage—test set distribution statistics leak into training features, producing unrealistically optimistic model evaluations."},{"q":"Q4: How does the engine detect outliers in multi-dimensional numerical feature spaces?","a":"Single columns use IQR thresholds (Q1 - 1.5*IQR, Q3 + 1.5*IQR). High-dimensional matrices use IsolationForest or LocalOutlierFactor (LOF).","crossQ":"Cross-Question: How does an Isolation Forest isolate anomaly data points algorithmically?","crossA":"Isolation Forests randomly split feature values. Anomalies require fewer recursive splits to isolate (shorter tree path length) than normal dense cluster points."},{"q":"Q5: How are high-cardinality categorical features encoded automatically?","a":"Categoricals with <= 10 categories use One-Hot Encoding. Categoricals with > 10 categories use Target Encoding (with smoothing) or Ordinal Encoding to prevent sparse column explosion.","crossQ":"Cross-Question: What is Target Encoding smoothing, and why is it necessary?","crossA":"Target Encoding replaces categories with mean target values. Smoothing blends category means with global target means to prevent overfitting on rare categories with small sample sizes."}]},"minio_s3":{"id":"minio_s3","name":"MinIO S3 Storage (Object Store :9000)","tag":"MinIO S3 Object Storage","overview":{"what":"High-performance S3-compatible object storage service running on ports 9000/9001.","why":"Stores raw uploaded dataset files and intermediate/processed Parquet and CSV binary outputs at scale.","how":"Interfaced via Python `boto3` SDK, organizing data into partitioned bucket structures (`dataforge-datasets`) and generating S3 presigned URLs."},"questions":[{"q":"Q1: How does MinIO S3 object storage store raw and processed dataset binary files?","a":"MinIO stores dataset files (CSV, Parquet, Excel) in dedicated S3 buckets (dataforge-datasets). Key paths are structured deterministically: datasets/{dataset_id}/v{version_number}/data.parquet.","crossQ":"Cross-Question: How does S3 Object Key naming impact performance and partitioning?","crossA":"Structuring keys with prefix paths allows efficient prefix listing and horizontal S3 bucket partitioning across storage disks."},{"q":"Q2: How do Presigned URLs work for uploading and downloading files directly from MinIO S3?","a":"FastAPI uses boto3 to generate cryptographically signed URLs containing access key signatures and expiration timestamps (15 min). Clients upload/download files directly to MinIO using these URLs.","crossQ":"Cross-Question: Why use presigned URLs instead of proxying file streams through FastAPI endpoint routes?","crossA":"Direct S3 transit eliminates API server memory/CPU I/O bottlenecks, bypasses HTTP request size limits, and reduces network latency."},{"q":"Q3: How does MinIO ensure data durability using Erasure Coding and Bitrot protection?","a":"MinIO splits object data into data and parity blocks across multiple drives using Reed-Solomon erasure coding. It detects and heals silent data corruption (bitrot) automatically during reads.","crossQ":"Cross-Question: How many drive failures can MinIO tolerate with N/2 parity drives?","crossA":"With N/2 parity configuration, MinIO can lose up to half of the storage drives in a cluster without losing any stored data."},{"q":"Q4: How is bucket lifecycle management configured in MinIO S3 for temporary data exports?","a":"Bucket lifecycle policies set expiration rules on exports/ prefix paths, automatically deleting temporary download exports older than 24 hours to free up storage space.","crossQ":"Cross-Question: How does object versioning in MinIO S3 protect against accidental file deletions?","crossA":"Object versioning keeps historical revisions of overwritten or deleted keys, allowing restore of prior dataset snapshots."},{"q":"Q5: How does MinIO handle multipart uploads for multi-gigabyte dataset files?","a":"Files exceeding 100MB are split into 5MB-500MB chunks uploaded concurrently via InitiateMultipartUpload, UploadPart, and CompleteMultipartUpload.","crossQ":"Cross-Question: What happens if a multipart upload is interrupted halfway?","crossA":"Uncompleted part chunks remain in storage consuming space. MinIO lifecycle rules include AbortIncompleteMultipartUpload to auto-clean aborted chunks after 7 days."}]}};
+    const SECTIONS_LIST = Object.values(COMPONENT_DATA_MAP);
+
+    let activeTabId = 'all';
+
+    function initApp() {
+      renderTabs();
+
+      const params = new URLSearchParams(window.location.search);
+      const focusComp = params.get('component') || params.get('focus');
+      if (focusComp && COMPONENT_DATA_MAP[focusComp]) {
+        activeTabId = focusComp;
+        renderTabs();
+      }
+
+      renderFeed();
+    }
+
+    function renderTabs() {
+      const container = document.getElementById('tabsContainer');
+      let html = `<button class="tab-btn ${activeTabId === 'all' ? 'active' : ''}" onclick="selectTab('all')">
+        <span>All Components</span>
+        <span class="tab-count">50</span>
+      </button>`;
+
+      SECTIONS_LIST.forEach(sec => {
+        html += `<button class="tab-btn ${activeTabId === sec.id ? 'active' : ''}" onclick="selectTab('${sec.id}')">
+          <span>${sec.name}</span>
+          <span class="tab-count">5</span>
+        </button>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectTab(id) {
+      activeTabId = id;
+      renderTabs();
+      renderFeed();
+    }
+
+    function renderFeed() {
+      const feed = document.getElementById('qaFeed');
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      let sectionsToRender = SECTIONS_LIST;
+      if (activeTabId !== 'all') {
+        sectionsToRender = SECTIONS_LIST.filter(s => s.id === activeTabId);
+      }
+
+      feed.innerHTML = '';
+      let totalMatch = 0;
+
+      sectionsToRender.forEach(sec => {
+        let matchingQuestions = sec.questions;
+        if (search) {
+          matchingQuestions = sec.questions.filter(q => 
+            q.q.toLowerCase().includes(search) ||
+            q.a.toLowerCase().includes(search) ||
+            q.crossQ.toLowerCase().includes(search) ||
+            q.crossA.toLowerCase().includes(search)
+          );
+        }
+
+        if (matchingQuestions.length === 0) return;
+        totalMatch += matchingQuestions.length;
+
+        const secEl = document.createElement('div');
+        secEl.style.display = 'flex';
+        secEl.style.flexDirection = 'column';
+        secEl.style.gap = '16px';
+
+        let secHtml = `<div class="section-header">
+          <span>⚡ ${sec.name}</span>
+          <span style="font-size:11px; color:var(--muted); font-weight:normal;">(${matchingQuestions.length} Q&As)</span>
+        </div>`;
+
+        // Render WHAT WHY HOW Box
+        if (sec.overview) {
+          secHtml += `
+            <div class="wwh-box">
+              <div class="wwh-title">📌 Component Overview</div>
+              <div class="wwh-item"><strong>WHAT:</strong> ${sec.overview.what}</div>
+              <div class="wwh-item"><strong>WHY:</strong> ${sec.overview.why}</div>
+              <div class="wwh-item"><strong>HOW:</strong> ${sec.overview.how}</div>
+            </div>
+          `;
+        }
+
+        matchingQuestions.forEach((q, idx) => {
+          secHtml += `
+            <div class="qa-card ${idx === 0 ? 'open' : ''}" onclick="toggleQaCard(this, event)">
+              <div class="qa-card-header">
+                <div>
+                  <div class="qa-q-text">${q.q}</div>
+                  <div class="qa-meta">
+                    <span class="qa-tag">${sec.tag}</span>
+                    <span style="font-size:11px; color:var(--muted);">Click to toggle answer</span>
+                  </div>
+                </div>
+              </div>
+              <div class="qa-card-body">
+                <div class="ans-box">
+                  <div class="ans-label">Direct Technical Answer</div>
+                  <div>${q.a}</div>
+                </div>
+                <div class="cross-box">
+                  <div class="cross-header">🔥 Directly Related Cross-Question</div>
+                  <div class="cross-q">${q.crossQ}</div>
+                  <div class="cross-a">${q.crossA}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        secEl.innerHTML = secHtml;
+        feed.appendChild(secEl);
+      });
+
+      if (totalMatch === 0) {
+        feed.innerHTML = `<div class="no-results">
+          <div style="font-size:32px; margin-bottom:12px;">🧐</div>
+          <div>No matching interview questions found for "<strong>${search}</strong>".</div>
+          <div style="font-size:12px; margin-top:6px; color:var(--muted);">Try searching for JWT, Redis, FastAPI, PostgreSQL, CORS, or Parquet.</div>
+        </div>`;
+      }
+    }
+
+    function toggleQaCard(card, event) {
+      card.classList.toggle('open');
+    }
+
+    function filterData() {
+      renderFeed();
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

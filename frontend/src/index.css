@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --df-primary-bg: #E05A2B;
+    --df-primary-hover: #D75229;
+    --df-primary-fg: #1C1917;
+    --df-surface: #FFFDFB;
+    --df-page-bg: #FAF7F2;
+    --df-border: #E7E5E4;
+    --df-muted-fg: #57534E;
+    --df-warning-bg: #FEF3C7;
+    --df-warning-fg: #92400E;
+    --df-error-bg: #FEE2E2;
+    --df-error-fg: #991B1B;
+    --df-success-bg: #DCFCE7;
+    --df-success-fg: #166534;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #1C1917;
+    background: #FAF7F2;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#FAF7F2] text-[#1C1917] font-sans selection:bg-[#E05A2B] selection:text-white;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1eee9;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d1cc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c8c2bd;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass-card {
+  background-color: rgba(255, 253, 251, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(231, 229, 228, 0.9);
+  border-radius: 1rem;
+  box-shadow: 0 18px 50px rgba(28, 25, 23, 0.05);
+}
+
+/* The issue feed uses a compact column label. Keep its text and background
+   distinct from the legacy indigo utility overrides below. */
+body span.issue-column-badge[class] {
+  background-color: #F8E5DD !important;
+  border: 1px solid #E7C9B8 !important;
+  color: #8A3F18 !important;
+  display: inline-flex;
+  max-width: min(45%, 14rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Compatibility mapping for legacy utility classes. Keep foreground and surface
+  mappings independent so an accent label never becomes the same color as its background. */
+body [class*='bg-slate-950'],
+body [class*='bg-slate-900'],
+body [class*='bg-slate-800'],
+body [class*='bg-slate-700'],
+body [class*='bg-slate-600'],
+body [class*='bg-indigo-'],
+body [class*='bg-purple-'],
+body [class*='from-slate-'],
+body [class*='to-slate-'],
+body [class*='via-slate-'] {
+  background-color: var(--df-surface) !important;
+  background-image: none !important;
+}
+
+body [class*='text-slate-'],
+body [class*='text-white'] {
+  color: var(--df-primary-fg) !important;
+}
+
+body [class*='border-slate-'],
+body [class*='border-indigo-'],
+body [class*='border-purple-'] {
+  border-color: var(--df-border) !important;
+}
+
+body [class*='bg-indigo-950'],
+body [class*='bg-indigo-900'],
+body [class*='bg-indigo-800'],
+body [class*='bg-indigo-700'],
+body [class*='bg-indigo-600/'],
+body [class*='bg-indigo-500/'] {
+  background-color: #F8E5DD !important;
+}
+
+body [class~='bg-indigo-600'],
+body [class~='bg-indigo-500'] {
+  background-color: var(--df-primary-bg) !important;
+}
+
+body [class*='text-indigo-'],
+body [class*='text-purple-'] {
+  color: #9A3412 !important;
+}
+
+body [class*='hover:bg-indigo-']:hover,
+body [class*='hover:text-indigo-']:hover,
+body [class*='hover:border-indigo-']:hover {
+  background-color: var(--df-primary-hover) !important;
+  color: var(--df-primary-fg) !important;
+  border-color: var(--df-primary-bg) !important;
+}
+
+body [class*='shadow-indigo-'] {
+  box-shadow: 0 12px 28px rgba(224, 90, 43, 0.22) !important;
+}
+
+body [class*='bg-rose-600'][class*='text-white'],
+body [class*='bg-rose-500'][class*='text-white'],
+body [class*='bg-emerald-600'][class*='text-white'],
+body [class*='bg-blue-600'][class*='text-white'] {
+  color: #FFFFFF !important;
+}
+
+:focus-visible {
+  outline: 3px solid #9A3412;
+  outline-offset: 2px;
+}
