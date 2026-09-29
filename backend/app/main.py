@@ -25,6 +25,8 @@ origins = [
     for origin in settings.CORS_ORIGINS.split(",")
     if origin.strip()
 ]
+required_origins = ["https://dataforge-1-9ycn.onrender.com"]
+origins.extend(origin for origin in required_origins if origin not in origins)
 
 app.add_middleware(
     CORSMiddleware,

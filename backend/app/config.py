@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     S3_SECURE: bool = os.getenv("S3_SECURE", "false").lower() in ("true", "1")
     CORS_ORIGINS: str = os.getenv(
         "CORS_ORIGINS",
-        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173",
+        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173,https://dataforge-orcin.vercel.app,https://dataforge-1-9ycn.onrender.com",
     )
     
     # Local Storage Directory

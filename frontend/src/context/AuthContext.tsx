@@ -1,13 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../api/client';
+import { api, AuthUser } from '../api/client';
 
-export interface User {
-  id: string;
-  email: string;
-  full_name?: string;
-  is_active: boolean;
-  created_at: string;
-}
+export type User = AuthUser;
 
 interface AuthContextType {
   user: User | null;
@@ -16,7 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, fullName?: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -53,16 +47,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (email: string, password: string, fullName?: string) => {
-    const res = await api.register({ email, password, full_name: fullName });
+    const res = await api.register({ email, password, ...(fullName?.trim() ? { full_name: fullName.trim() } : {}) });
     localStorage.setItem('dataforge_token', res.access_token);
     setToken(res.access_token);
     setUser(res.user);
   };
 
-  const logout = () => {
-    localStorage.removeItem('dataforge_token');
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      await api.logout();
+    } finally {
+      localStorage.removeItem('dataforge_token');
+      setToken(null);
+      setUser(null);
+    }
   };
 
   return (

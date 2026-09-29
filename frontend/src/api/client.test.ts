@@ -32,7 +32,7 @@ describe('apiRequest authentication', () => {
 
     await apiRequest('/jobs/?limit=5');
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/v1/jobs/?limit=5', {
+    expect(fetchMock).toHaveBeenCalledWith('https://dataforge-a1fh.onrender.com/api/v1/jobs/?limit=5', {
       headers: {
         Authorization: 'Bearer test-token',
         'Content-Type': 'application/json',

@@ -18,9 +18,12 @@ export const Navbar: React.FC = () => {
   const { dataset, selectedVersionId, versions, setSelectedVersionId } = useDataset();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      navigate('/login');
+    }
   };
 
   const currentVer = versions.find(v => v.id === selectedVersionId) || dataset?.current_version;

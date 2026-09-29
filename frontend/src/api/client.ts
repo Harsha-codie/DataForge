@@ -1,8 +1,56 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'https://dataforge-a1fh.onrender.com/api/v1').replace(/\/+$/, '');
 
 export interface ApiError {
   message: string;
   status?: number;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  full_name?: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  user: AuthUser;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  full_name?: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+function getErrorMessage(detail: unknown): string | undefined {
+  if (typeof detail === 'string') {
+    return detail;
+  }
+
+  if (Array.isArray(detail)) {
+    const messages = detail.map((item) => {
+      if (typeof item === 'string') return item;
+      if (item && typeof item === 'object' && 'msg' in item) {
+        return String(item.msg);
+      }
+      return null;
+    }).filter(Boolean);
+    if (messages.length > 0) return messages.join('. ');
+  }
+
+  if (detail && typeof detail === 'object' && 'message' in detail) {
+    return String(detail.message);
+  }
+
+  return undefined;
 }
 
 export async function apiRequest<T = any>(
@@ -46,7 +94,7 @@ export async function apiRequest<T = any>(
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const errorMsg = data?.detail || data?.message || `Request failed with status ${response.status}`;
+    const errorMsg = getErrorMessage(data?.detail) || getErrorMessage(data?.message) || `Request failed with status ${response.status}`;
     const err: ApiError = { message: errorMsg, status: response.status };
     throw err;
   }
@@ -77,9 +125,10 @@ export function buildVisualizationMetadataEndpoint(datasetId: string, versionId?
 
 export const api = {
   // Auth
-  register: (body: any) => apiRequest('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
-  login: (body: any) => apiRequest('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
-  getMe: () => apiRequest('/auth/me'),
+  register: (body: RegisterRequest) => apiRequest<AuthResponse>('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
+  login: (body: LoginRequest) => apiRequest<AuthResponse>('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
+  getMe: () => apiRequest<AuthUser>('/auth/me'),
+  logout: () => apiRequest<{ message: string }>('/auth/logout', { method: 'POST' }),
 
   // Datasets
   getDatasets: (params?: string) => apiRequest(`/datasets/${params ? `?${params}` : ''}`),
