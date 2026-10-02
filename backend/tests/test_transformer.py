@@ -157,3 +157,39 @@ def test_transformations_reject_unknown_options():
         DataTransformer.apply_transformation(frame, "change_case", {"columns": ["value"], "case": "sideways"})
     with pytest.raises(ValueError, match="method"):
         DataTransformer.apply_transformation(frame, "handle_outliers", {"columns": ["value"], "method": "unknown"})
+
+
+def test_one_hot_encode_handles_null_values_as_zero():
+    frame = pl.DataFrame({"category": ["A", None, "B", "A"]})
+    result, summary = DataTransformer.apply_transformation(
+        frame,
+        "one_hot_encode",
+        {"columns": ["category"], "drop_first": False}
+    )
+    assert result["category_A"].to_list() == [1, 0, 0, 1]
+    assert result["category_B"].to_list() == [0, 0, 1, 0]
+    assert result["category_A"].null_count() == 0
+    assert result["category_B"].null_count() == 0
+
+
+def test_fill_missing_constant_boolean_rejects_invalid_values():
+    frame = pl.DataFrame({"active": [True, None, False]})
+    with pytest.raises(ValueError, match="Invalid boolean fill value"):
+        DataTransformer.apply_transformation(
+            frame,
+            "fill_missing_constant",
+            {"columns": ["active"], "value": "not_a_boolean"}
+        )
+
+
+def test_data_exporter_json_export():
+    from app.engine.exporter import DataExporter
+    frame = pl.DataFrame({"id": [1, 2], "name": ["Alpha", "Beta"]})
+    bytes_out, mime_type, ext = DataExporter.export(frame, "json")
+    assert mime_type == "application/json"
+    assert ext == "json"
+    import json
+    data = json.loads(bytes_out.decode("utf-8"))
+    assert len(data) == 2
+    assert data[0]["name"] == "Alpha"
+

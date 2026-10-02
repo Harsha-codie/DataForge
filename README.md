@@ -255,6 +255,33 @@ docker compose up --build
 
 ---
 
+## 🧪 Running Automated Tests
+
+DataForge includes automated unit and integration test suites:
+
+### Backend Tests (Pytest)
+```bash
+cd backend
+pytest
+```
+* Validates 25 test cases covering parsing, type conversions, one-hot encoding null safety, outlier calculations, and JSON/Parquet export serialization.
+
+### Frontend Tests (Vitest)
+```bash
+cd frontend
+npm test
+```
+* Runs Vitest suites validating client API endpoints, JWT bearer header attachment, and query parameter builders.
+
+---
+
+## 📊 Sample Datasets
+
+A dirty test dataset is included in the repository for immediate testing:
+* **[`sample_data/dirty_customer_churn.csv`](sample_data/dirty_customer_churn.csv)**: Contains customer records with intentional missing values, mixed data types, and outliers designed to test the Profiling, Transformation, and ML Readiness pipelines.
+
+---
+
 ## 🔌 API Reference Overview
 
 | Method | Endpoint | Description |

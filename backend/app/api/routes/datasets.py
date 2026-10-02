@@ -146,8 +146,8 @@ async def upload_dataset(
 @router.get("/", response_model=List[DatasetListItem])
 def list_datasets(
     search: Optional[str] = Query(None),
-    sort_by: str = Query("updated_at", regex="^(created_at|updated_at|name|file_size_bytes)$"),
-    sort_order: str = Query("desc", regex="^(asc|desc)$"),
+    sort_by: str = Query("updated_at", pattern="^(created_at|updated_at|name|file_size_bytes)$"),
+    sort_order: str = Query("desc", pattern="^(asc|desc)$"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

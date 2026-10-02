@@ -179,9 +179,13 @@ class DataTransformer:
                 elif dtype == pl.Boolean:
                     c_val = cls._parse_boolean(value)
                     if c_val is None:
-                        raise ValueError("Boolean fill value is invalid")
+                        raise ValueError(f"Invalid boolean fill value '{value}'. Expected true, false, 0, or 1.")
                 else:
                     c_val = str(value)
+            except (ValueError, TypeError) as err:
+                if dtype == pl.Boolean or dtype.is_integer() or dtype.is_float():
+                    raise ValueError(f"Cannot fill column '{col}' of type {dtype} with value '{value}': {str(err)}")
+                c_val = value
             except Exception:
                 c_val = value
             exprs.append(pl.col(col).fill_null(c_val).alias(col))
@@ -595,7 +599,7 @@ class DataTransformer:
                 while new_col_name in res_df.columns or new_col_name in new_cols_added:
                     new_col_name = f"{base_name}_{suffix}"
                     suffix += 1
-                exprs.append((pl.col(col).cast(pl.String) == str(val)).cast(pl.Int8).alias(new_col_name))
+                exprs.append((pl.col(col).cast(pl.String) == str(val)).fill_null(False).cast(pl.Int8).alias(new_col_name))
                 new_cols_added.append(new_col_name)
                 category_mapping[f"{col}:{val}"] = new_col_name
             res_df = res_df.with_columns(exprs).drop(col)

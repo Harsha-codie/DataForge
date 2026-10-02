@@ -1,4 +1,4 @@
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'https://dataforge-a1fh.onrender.com/api/v1').replace(/\/+$/, '');
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'https://dataforge-1-9ycn.onrender.com/api/v1').replace(/\/+$/, '');
 
 export interface ApiError {
   message: string;

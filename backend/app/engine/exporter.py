@@ -33,7 +33,7 @@ class DataExporter:
 
         elif fmt == "json":
             buf = io.BytesIO()
-            work_df.write_json(buf, pretty=True)
+            work_df.write_json(buf)
             return buf.getvalue(), "application/json", "json"
 
         elif fmt in ("xlsx", "excel"):
