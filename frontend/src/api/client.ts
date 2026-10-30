@@ -150,7 +150,7 @@ export const api = {
   // Schemas
   getSchemas: (datasetId?: string) => apiRequest(`/schemas/${datasetId ? `?dataset_id=${datasetId}` : ''}`),
   getSchema: (id: string) => apiRequest(`/schemas/${id}`),
-  createSchema: (body: any) => apiRequest('/schemas/', { method: 'POST', body: JSON.stringify(body) }),
+  createSchema: (body: any) => apiRequest('/schemas/', { method: 'POST', body: JSON?.stringify(body) }),
   deleteSchema: (id: string) => apiRequest(`/schemas/${id}`, { method: 'DELETE' }),
   compareSchema: (datasetId: string, versionId?: string, schemaId?: string, customColumns?: any) =>
     apiRequest(`/schemas/compare?dataset_id=${datasetId}${versionId ? `&version_id=${versionId}` : ''}${schemaId ? `&schema_id=${schemaId}` : ''}`, {
